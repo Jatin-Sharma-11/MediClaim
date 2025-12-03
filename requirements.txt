@@ -1,0 +1,10 @@
+numpy<2
+protobuf==3.20.3
+streamlit
+groq
+chromadb
+sentence-transformers
+python-dotenv
+sqlalchemy
+duckdb
+openpyxl
