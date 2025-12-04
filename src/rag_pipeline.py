@@ -5,8 +5,8 @@ import os
 from typing import List, Dict
 
 class RAGPipeline:
-    def __init__(self, collection_name="insurance_claims"):
-        self.client = chromadb.Client()
+    def __init__(self, collection_name="insurance_claims", persist_directory="chroma_db"):
+        self.client = chromadb.PersistentClient(path=persist_directory)
         self.collection_name = collection_name
         self.model = SentenceTransformer('all-MiniLM-L6-v2')
         self.collection = self.client.get_or_create_collection(name=self.collection_name)

@@ -72,7 +72,18 @@ class Text2SQLPipeline:
     def execute_sql(self, sql_query: str) -> pd.DataFrame:
         print(f"🚀 Executing SQL: {sql_query}")
         try:
+            # Debug: Check if table exists and has data
+            tables = self.con.execute("SHOW TABLES").fetchdf()
+            print(f"Tables in DB: {tables}")
+            
+            if 'claims' in tables['name'].values:
+                count = self.con.execute("SELECT count(*) FROM claims").fetchone()[0]
+                print(f"Rows in 'claims' table: {count}")
+            else:
+                print("❌ Table 'claims' does not exist!")
+                
             result = self.con.execute(sql_query).fetchdf()
+            print(f"Result shape: {result.shape}")
             return result
         except Exception as e:
             print(f"❌ SQL Execution Failed: {e}")
