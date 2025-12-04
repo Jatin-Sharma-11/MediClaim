@@ -36,6 +36,20 @@ def reload_pipelines():
     st.session_state.t2s = get_text2sql_pipeline()
     st.success("Pipelines reloaded with new data!")
 
+# Check for API Key
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    try:
+        import streamlit as st
+        api_key = st.secrets["GROQ_API_KEY"]
+    except:
+        pass
+
+if not api_key:
+    st.error("🚨 GROQ_API_KEY not found! Please set it in your environment variables or Streamlit Secrets.")
+    st.info("To set in Streamlit Secrets: Go to App Settings -> Secrets and add `GROQ_API_KEY = 'your_key'`")
+    st.stop()
+
 try:
     rag = get_rag_pipeline()
     t2s = get_text2sql_pipeline()
