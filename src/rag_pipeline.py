@@ -56,7 +56,15 @@ class RAGPipeline:
         from groq import Groq
         import os
         
-        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            try:
+                import streamlit as st
+                api_key = st.secrets["GROQ_API_KEY"]
+            except:
+                pass
+                
+        client = Groq(api_key=api_key)
         
         context_str = "\n\n".join(context_results['documents'][0])
         
